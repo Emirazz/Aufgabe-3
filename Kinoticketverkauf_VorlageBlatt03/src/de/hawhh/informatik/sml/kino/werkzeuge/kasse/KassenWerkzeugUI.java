@@ -57,6 +57,11 @@ class KassenWerkzeugUI
         _frame.getContentPane().add(topPanel, BorderLayout.NORTH);
         _frame.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
     }
+    
+    public JFrame getFrame()
+    {
+    	return _frame;
+    }
 
     /**
      * Zeigt das Fenster an.

@@ -7,19 +7,20 @@ import javax.swing.JPanel;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
+import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
 
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
  * auf einer Vorstellung als Material. Mit ihm kann angezeigt werden, welche
  * Plätze schon verkauft und welche noch frei sind.
  * 
- * Dieses Werkzeug ist ein eingebettetes Subwerkzeug. Es kann nicht beobachtet
+ * Dieses Werkzeug ist ein eingebettetes Subwerkzeug. Es kann beobachtet
  * werden.
  * 
  * @author SE2-Team (Uni HH), PM2-Team
  * @version SoSe 2017
  */
-public class PlatzVerkaufsWerkzeug
+public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 {
     // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
     private Vorstellung _vorstellung;
@@ -35,8 +36,25 @@ public class PlatzVerkaufsWerkzeug
         registriereUIAktionen();
         // Am Anfang wird keine Vorstellung angezeigt:
         setVorstellung(null);
+        setzeAufBarzahlungsWerkzeugListener();
     }
 
+    /**
+     * Fügt der den BarzahlungsWerkzeugListener hinzu.
+     */
+    private void setzeAufBarzahlungsWerkzeugListener()
+    {
+        _ui.getVerkaufenButton().addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+            	informiereUeberAenderung();
+                verkaufePlaetze(_vorstellung);
+            }
+        });
+    }
+    
     /**
      * Gibt das Panel dieses Subwerkzeugs zurück. Das Panel sollte von einem
      * Kontextwerkzeug eingebettet werden.
@@ -58,6 +76,7 @@ public class PlatzVerkaufsWerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
+            	informiereUeberAenderung();
                 verkaufePlaetze(_vorstellung);
             }
         });
@@ -173,6 +192,7 @@ public class PlatzVerkaufsWerkzeug
         Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
         vorstellung.verkaufePlaetze(plaetze);
         aktualisierePlatzplan();
+        
     }
 
     /**

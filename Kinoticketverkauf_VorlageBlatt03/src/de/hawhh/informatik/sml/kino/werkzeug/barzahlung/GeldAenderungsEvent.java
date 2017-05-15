@@ -3,12 +3,10 @@ package de.hawhh.informatik.sml.kino.werkzeug.barzahlung;
 import java.util.EventObject;
 
 /**
- * Event, das über eine Änderung bei der Auswahl von Plätzen informiert. Dieses
- * Event wird von einem {@link JPlatzplan} ausgelöst, wenn der Benutzer in dem
- * Platzplan Plätze auswählt. Das Event enthält die Menge der Plätze, die jetzt
- * ausgewählt sind.
+ * Event, das über eine Änderung bei der Barzahlen informiert. Dieses
+ * Event wird von einem {@link } 
  * 
- * @author SE2-Team (Uni HH), PM2-Team
+ * @author Emira Zorgati
  * @version SoSe 2017
  */
 class GeldAenderungsEvent extends EventObject

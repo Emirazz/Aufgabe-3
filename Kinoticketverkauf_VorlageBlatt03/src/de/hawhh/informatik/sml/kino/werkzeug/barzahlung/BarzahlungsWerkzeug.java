@@ -2,48 +2,47 @@ package de.hawhh.informatik.sml.kino.werkzeug.barzahlung;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
-import javax.swing.JPanel;
-import de.hawhh.informatik.sml.kino.fachwerte.Platz;
-import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
+import javax.swing.JFrame;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
+import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
 
 /**
  * Mit diesem Werkzeug können Tickets Bar bezahlt werden. Es arbeitet
- * auf einer Vorstellung als Material. Mit ihm kann angezeigt werden, welche
- * Plätze schon verkauft und welche noch frei sind.
+ * auf einer Vorstellung als Material. Mit ihm kann angezeigt werden, was gezahlt werden muss und
+ * welches Rueckgeld gezahlt werden muss fuer Betrag x.
  * 
- * Dieses Werkzeug ist ein eingebettetes Subwerkzeug. Es kann nicht beobachtet
- * werden.
  * 
- * @author SE2-Team (Uni HH), PM2-Team
+ * @author Emira Zorgati
  * @version SoSe 2017
  */
-public class BarzahlungsWerkzeug
+public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
 {
-    // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
+    // Die aktuelle Vorstellung, deren Tickets verkauft werden. Darf nicht null sein.
     private Vorstellung _vorstellung;
 
     private BarzahlungsWerkzeugUI _ui;
 
     /**
      * Initialisiert das BarzahlungsWerkzeug.
+     * @require vorstellung != null
      */
-    public BarzahlungsWerkzeug()
+    public BarzahlungsWerkzeug(Vorstellung vorstellung, JFrame owner)
     {
-        _ui = new BarzahlungsWerkzeugUI();
+    	assert vorstellung != null : "Vorbedingung verletzt: vorstellung != null";
+    	
+    	_vorstellung = vorstellung;
+        _ui = new BarzahlungsWerkzeugUI(owner);
         registriereUIAktionen();
+        
+        _ui.zeigeFenster();
     }
-
+    
     /**
-     * Gibt das Panel dieses Subwerkzeugs zurück. Das Panel sollte von einem
-     * Kontextwerkzeug eingebettet werden.
-     * 
-     * @ensure result != null
+     * Gibt den Aufgewählten Filmtitel als String zurueck.
      */
-    public JPanel getUIPanel()
+    private String getTickets()
     {
-        return _ui.getUIPanel();
+    	return "Tickets für:" + _vorstellung.getFilm();
     }
 
     /**
@@ -56,7 +55,7 @@ public class BarzahlungsWerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                verkaufePlaetze(_vorstellung);
+            	reagiereAufBeendenButton();
             }
         });
 
@@ -65,46 +64,19 @@ public class BarzahlungsWerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                stornierePlaetze(_vorstellung);
+            	informiereUeberAenderung();
+            	reagiereAufBeendenButton();
             }
         });
-
-        _ui.getBargeld().addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                setzeRueckgeld(_vorstellung);
-            }
-                });
     }
-
+    
     /**
-     * Reagiert darauf, dass sich der Geldbetrag geändert
-     * hat.
-     * 
-     * @param plaetze die jetzt ausgewählten Plätze.
+     * Beendet die Anwendung.
      */
-    private void reagiereAufGeldbetrag(int bargeld)
+    private void reagiereAufBeendenButton()
     {
-        
+    	System.exit(0);
     }
-
-    /**
-     * Aktualisiert den anzuzeigenden Gesamtpreis
-     */
-    private void aktualisierePreisanzeige(Set<Platz> plaetze)
-    {
-
-        if (istVerkaufenMoeglich(plaetze))
-        {
-            int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
-            _ui.getPreisLabel().setText("Gesamtpreis: " + preis + " Eurocent");
-        }
-        else
-        {
-            _ui.getPreisLabel().setText("Gesamtpreis:");
-        }
-    }
+    
 }
 

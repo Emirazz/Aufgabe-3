@@ -10,6 +10,7 @@ import de.hawhh.informatik.sml.kino.werkzeuge.SubwerkzeugObserver;
 import de.hawhh.informatik.sml.kino.werkzeuge.datumsauswaehler.DatumAuswaehlWerkzeug;
 import de.hawhh.informatik.sml.kino.werkzeuge.platzverkauf.PlatzVerkaufsWerkzeug;
 import de.hawhh.informatik.sml.kino.werkzeuge.vorstellungsauswaehler.VorstellungsAuswaehlWerkzeug;
+import de.hawhh.informatik.sml.kino.werkzeug.barzahlung.BarzahlungsWerkzeug;
 
 /**
  * Das Kassenwerkzeug. Mit diesem Werkzeug kann die Benutzerin oder der Benutzer
@@ -31,6 +32,8 @@ public class KassenWerkzeug
     private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
     private DatumAuswaehlWerkzeug _datumAuswaehlWerkzeug;
     private VorstellungsAuswaehlWerkzeug _vorstellungAuswaehlWerkzeug;
+    
+    private BarzahlungsWerkzeug _barzahlungsWerkzeug;
 
     /**
      * Initialisiert das Kassenwerkzeug.
@@ -87,6 +90,16 @@ public class KassenWerkzeug
                         setzeAusgewaehlteVorstellung();
                     }
                 });
+        _platzVerkaufsWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
+        {
+            @Override
+            public void reagiereAufAenderung()
+            {
+            	_barzahlungsWerkzeug = new BarzahlungsWerkzeug
+            			(_vorstellungAuswaehlWerkzeug.getAusgewaehlteVorstellung(),_ui.getFrame());
+            	
+            }
+        });
     }
 
     /**
