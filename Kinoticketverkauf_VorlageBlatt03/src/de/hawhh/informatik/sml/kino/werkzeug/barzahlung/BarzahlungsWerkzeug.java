@@ -33,8 +33,6 @@ public class BarzahlungsWerkzeug
     {
         _ui = new BarzahlungsWerkzeugUI();
         registriereUIAktionen();
-        // Am Anfang wird keine Vorstellung angezeigt:
-        setVorstellung(null);
     }
 
     /**
