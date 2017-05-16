@@ -6,12 +6,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JDialog;
+import javax.swing.JTextField;
 
 public class BarzahlungsWerkzeugUI
 {
@@ -19,25 +19,39 @@ public class BarzahlungsWerkzeugUI
 
 	private JButton _AbbruchButton;
     private JButton _OKButton;
-    private JLabel _preisLabel;
+    private String _text;
+    private int _preis;
     private JDialog _dialog;
-    private JFrame _frame;
     
-    public BarzahlungsWerkzeugUI(JFrame owner)
+    public BarzahlungsWerkzeugUI(String tickets, int preis)
     {
-    	_dialog = new JDialog(owner,TITEL, true);
+    	_text = tickets;
+    	_preis = preis;
+    	_dialog = new JDialog();
     	_dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        _frame.getContentPane().setLayout(new BorderLayout());
+        _dialog.getContentPane().setLayout(new BorderLayout());
         JComponent topPanel = erstelleUeberschriftPanel();
-        JComponent bottomPanel = erstelleAbbruchPanel();
-        JComponent bottom2Panel = erstelleOKPanel();
+        JComponent bottomPanel = erstelleBottomPanel();
+        JComponent centerPanel = erstelleMitte();
         
-        _frame.getContentPane().add(topPanel, BorderLayout.NORTH);
-        _frame.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-        _frame.getContentPane().add(bottom2Panel, BorderLayout.SOUTH);
-        _dialog.setContentPane(_frame);
+        _dialog.getContentPane().add(topPanel, BorderLayout.NORTH);
+        _dialog.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+        _dialog.getContentPane().add(centerPanel, BorderLayout.CENTER);
     }
     
+    /**
+     * 
+     */
+    private JPanel erstelleMitte()
+    {
+    	JPanel pane = new JPanel();
+    	JLabel label = new JLabel(_text + "\nZu zahlen: " + _preis);
+    	label.setBorder(BorderFactory
+                .createEmptyBorder(15, 15, 15, 15));
+    	pane.add(label);
+    	JTextField text = new JTextField("\nin Bar erhalten: \nRückgeld: ");
+    	return pane;
+    }
     /**
      * Erzeugt das Panel mit der Überschrift fuer das Programm.
      */
@@ -59,27 +73,16 @@ public class BarzahlungsWerkzeugUI
     /**
      * Erzeugt das Panel mit dem Beenden-Button.
      */
-    private JPanel erstelleAbbruchPanel()
+    private JPanel erstelleBottomPanel()
     {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        _AbbruchButton = new JButton("Abbruch");
-        bottomPanel.add(_AbbruchButton);
-
-        return bottomPanel;
-    }
-    
-    /**
-     * Erzeugt das Panel mit dem Beenden-Button.
-     */
-    private JPanel erstelleOKPanel()
-    {
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-        bottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         _OKButton = new JButton("OK");
         bottomPanel.add(_OKButton);
+        _AbbruchButton = new JButton("Abbrechen");
+        bottomPanel.add(_AbbruchButton);
+        
 
         return bottomPanel;
     }
@@ -89,8 +92,8 @@ public class BarzahlungsWerkzeugUI
      */
     public void zeigeFenster()
     {
-        _frame.setSize(600, 450);
-        _frame.setVisible(true);
+    	_dialog.setSize(600, 450);
+    	_dialog.setVisible(true);
     }
     
     /**
@@ -98,7 +101,7 @@ public class BarzahlungsWerkzeugUI
      */
     public void schliesseFenster()
     {
-        _frame.dispose();
+    	_dialog.dispose();
     }
     
     /**

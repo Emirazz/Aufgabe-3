@@ -7,25 +7,27 @@ import javax.swing.JPanel;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
-import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
+import de.hawhh.informatik.sml.kino.werkzeug.barzahlung.BarzahlungsWerkzeug;
+import de.hawhh.informatik.sml.kino.werkzeuge.SubwerkzeugObserver;
 
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
  * auf einer Vorstellung als Material. Mit ihm kann angezeigt werden, welche
  * Plätze schon verkauft und welche noch frei sind.
  * 
- * Dieses Werkzeug ist ein eingebettetes Subwerkzeug. Es kann beobachtet
+ * Dieses Werkzeug ist ein eingebettetes Subwerkzeug. Es kann nicht beobachtet
  * werden.
  * 
  * @author SE2-Team (Uni HH), PM2-Team
  * @version SoSe 2017
  */
-public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
+public class PlatzVerkaufsWerkzeug
 {
     // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
     private Vorstellung _vorstellung;
 
     private PlatzVerkaufsWerkzeugUI _ui;
+    private BarzahlungsWerkzeug _barzahlungswerkzeug;
 
     /**
      * Initialisiert das PlatzVerkaufsWerkzeug.
@@ -36,25 +38,8 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
         registriereUIAktionen();
         // Am Anfang wird keine Vorstellung angezeigt:
         setVorstellung(null);
-        setzeAufBarzahlungsWerkzeugListener();
     }
 
-    /**
-     * Fügt der den BarzahlungsWerkzeugListener hinzu.
-     */
-    private void setzeAufBarzahlungsWerkzeugListener()
-    {
-        _ui.getVerkaufenButton().addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            	informiereUeberAenderung();
-                verkaufePlaetze(_vorstellung);
-            }
-        });
-    }
-    
     /**
      * Gibt das Panel dieses Subwerkzeugs zurück. Das Panel sollte von einem
      * Kontextwerkzeug eingebettet werden.
@@ -64,6 +49,22 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
     public JPanel getUIPanel()
     {
         return _ui.getUIPanel();
+    }
+    
+    /**
+     * Informiert das BarzahlungsWerkzeug, darber, dass der Verkaufen Button gedrückt wurde.
+     */
+    private void informiereBarzahlungsWerkzeug()
+    {
+    	_barzahlungswerkzeug = new BarzahlungsWerkzeug(_vorstellung,_ui.getPlatzplan().getAusgewaehltePlaetze());
+    	_barzahlungswerkzeug.registriereBeobachter(new SubwerkzeugObserver()
+        {
+            @Override
+            public void reagiereAufAenderung()
+            {
+            	verkaufePlaetze(_vorstellung);
+            }
+        });
     }
 
     /**
@@ -76,8 +77,7 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-            	informiereUeberAenderung();
-                verkaufePlaetze(_vorstellung);
+                informiereBarzahlungsWerkzeug();
             }
         });
 
@@ -192,7 +192,6 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
         Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
         vorstellung.verkaufePlaetze(plaetze);
         aktualisierePlatzplan();
-        
     }
 
     /**

@@ -2,8 +2,9 @@ package de.hawhh.informatik.sml.kino.werkzeug.barzahlung;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
+import java.util.Set;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
+import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
 
 /**
@@ -19,19 +20,23 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
 {
     // Die aktuelle Vorstellung, deren Tickets verkauft werden. Darf nicht null sein.
     private Vorstellung _vorstellung;
+    private Set<Platz> _plaetze;
 
     private BarzahlungsWerkzeugUI _ui;
 
     /**
      * Initialisiert das BarzahlungsWerkzeug.
      * @require vorstellung != null
+     * @require plaetze != null
      */
-    public BarzahlungsWerkzeug(Vorstellung vorstellung, JFrame owner)
+    public BarzahlungsWerkzeug(Vorstellung vorstellung, Set<Platz> plaetze)
     {
     	assert vorstellung != null : "Vorbedingung verletzt: vorstellung != null";
+    	assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
     	
     	_vorstellung = vorstellung;
-        _ui = new BarzahlungsWerkzeugUI(owner);
+    	_plaetze = plaetze;
+        _ui = new BarzahlungsWerkzeugUI(getTickets(), _vorstellung.getPreisFuerPlaetze(_plaetze));
         registriereUIAktionen();
         
         _ui.zeigeFenster();
@@ -42,7 +47,8 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      */
     private String getTickets()
     {
-    	return "Tickets für:" + _vorstellung.getFilm();
+    	String x = "Tickets für:\n" + _vorstellung.toString() + "\nPlätze: " + _plaetze;
+    	return x;
     }
 
     /**
@@ -75,7 +81,7 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      */
     private void reagiereAufBeendenButton()
     {
-    	System.exit(0);
+    	_ui.schliesseFenster();
     }
     
 }
