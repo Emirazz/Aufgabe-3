@@ -3,6 +3,9 @@ package de.hawhh.informatik.sml.kino.werkzeug.barzahlung;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
+
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
@@ -70,8 +73,16 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-            	informiereUeberAenderung();
-            	reagiereAufBeendenButton();
+            	if(_ui.getRueckgeld() >= 0)
+            	{
+            		informiereUeberAenderung();
+                	reagiereAufBeendenButton();
+            	}
+            	else
+            	{
+            		JOptionPane.showMessageDialog(null,
+            				"Verkaufen nicht möglich, da Einnahmen zu gering!", "Fehlermeldung", JOptionPane.ERROR_MESSAGE);
+            	}
             }
         });
     }
