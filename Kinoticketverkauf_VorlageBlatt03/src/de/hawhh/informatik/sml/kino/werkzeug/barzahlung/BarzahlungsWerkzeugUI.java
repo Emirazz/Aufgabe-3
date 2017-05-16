@@ -32,7 +32,7 @@ public class BarzahlungsWerkzeugUI
     	_text = tickets;
     	_preis = preis;
     	_rueckgeld = -preis;
-    	_dialog = new JDialog();
+    	_dialog = new JDialog(_dialog,true);
     	_dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         _dialog.getContentPane().setLayout(new BorderLayout());
         JComponent topPanel = erstelleUeberschriftPanel();
@@ -79,8 +79,8 @@ public class BarzahlungsWerkzeugUI
     	            {
     					if(field.getValue() == int.class)
     					{
-    					int bargeld = (int)field.getValue();
-    	            	berechneRueckgeld(bargeld);
+    						int bargeld =(int)field.getValue();
+    	            		aktualisiereRueckgeld(bargeld);
     					}
     	            }    		
     			});
@@ -95,10 +95,11 @@ public class BarzahlungsWerkzeugUI
     /**
      * Berechnet das Rueckgeld.
      */
-    private int berechneRueckgeld(int bargeld)
+    private void aktualisiereRueckgeld(int bargeld)
     {
     	_rueckgeld = _preis - bargeld;
-    	return _rueckgeld;
+    	JComponent centerPanel = erstelleMitte();
+    	centerPanel.repaint();
     }
     /**
      * Erzeugt das Panel mit der Überschrift fuer das Programm.
