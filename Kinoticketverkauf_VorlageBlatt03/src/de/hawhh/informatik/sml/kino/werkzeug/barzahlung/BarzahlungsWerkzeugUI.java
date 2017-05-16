@@ -32,7 +32,7 @@ public class BarzahlungsWerkzeugUI
     	_text = tickets;
     	_preis = preis;
     	_rueckgeld = -preis;
-    	_dialog = new JDialog(_dialog,true);
+    	_dialog = new JDialog();
     	_dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         _dialog.getContentPane().setLayout(new BorderLayout());
         JComponent topPanel = erstelleUeberschriftPanel();
