@@ -64,7 +64,7 @@ public class BarzahlungsWerkzeugUI
                 .createEmptyBorder(5, 5, 5, 5));
     	pane.add(label, BorderLayout.NORTH);
     	
-    	label = new JLabel("\nZu zahlen: " + _preis + " Eurocent");
+    	label = new JLabel("\nZu zahlen: " + _preis);
     	label.setBorder(BorderFactory
                 .createEmptyBorder(5, 5, 5, 5));
     	pane.add(label, BorderLayout.NORTH);
@@ -91,7 +91,7 @@ public class BarzahlungsWerkzeugUI
     	            }    		
     			});
     	
-    	label = new JLabel("Rückgeld: " + _rueckgeld + " Eurocent");
+    	label = new JLabel("Rückgeld: " + _rueckgeld);
     	label.setBorder(BorderFactory
                 .createEmptyBorder(5, 5, 5, 5));
     	pane.add(label, BorderLayout.SOUTH);
@@ -157,12 +157,11 @@ public class BarzahlungsWerkzeugUI
      */
     private void aktualisiereRueckgeld(int bargeld)
     {
-    	_rueckgeld = _preis - bargeld;
-    	JComponent centerPanel = erstelleMitte();
-    	_dialog.remove(centerPanel);
-    	_dialog.add(centerPanel);
-    	_dialog.revalidate();
+    	_rueckgeld = -_preis + bargeld;
+    	_dialog.add(erstelleMitte());
     	_dialog.repaint();
+    	_dialog.validate();
+    	_dialog.setVisible(true);
     }
     /**
      * Erzeugt das Panel mit der Überschrift fuer das Programm.

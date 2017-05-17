@@ -26,6 +26,7 @@ public class Geldbetrag
 	 * 			Der Cent Anteil.
 	 * @require euro >= 0
 	 * @require cent >= 0 && cent < 100
+	 * @ensure result !=null
 	 */
 	private Geldbetrag(int euro, int cent)
 	{
@@ -192,6 +193,7 @@ public class Geldbetrag
 	 * 			Der Cent Anteil.
 	 * @require euro >= 0
 	 * @require cent >= 0 && cent < 100
+	 * @ensure result !=null
 	 */
 	public static Geldbetrag get(int euro, int cent)
 	{
@@ -220,12 +222,15 @@ public class Geldbetrag
 	 * @return
 	 * @require text != null
 	 * @require !test.isEmpty()
+	 * @require Cent.length() == 2
+	 * @require text.contains(",")
 	 * @ensure return != null
 	 */
 	public static Geldbetrag toGeldbetrag(String text)
 	{
 		assert text != null: "Vorbedinung verletzt: text != null";
 		assert !text.isEmpty(): "Vorbedinung verletzt: !text.isEmpty()";
+		assert text.contains(",");
 		String euro = "";
 		String cent = "";
 		boolean komma = false;
@@ -245,6 +250,7 @@ public class Geldbetrag
 				komma = true;
 			}
 		}
+		assert cent.length() == 2: "Vorbedinung verletzt: Cent.length() == 2";
 		return Geldbetrag.get(toInt(euro), toInt(cent));
 	}
 	
