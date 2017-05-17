@@ -1,8 +1,8 @@
 package de.hawhh.informatik.sml.kino.werkzeug.barzahlung;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.SpringLayout;
 
 public class BarzahlungsWerkzeugUI
 {
@@ -27,13 +29,16 @@ public class BarzahlungsWerkzeugUI
     private int _preis;
     private JDialog _dialog;
     
-    public BarzahlungsWerkzeugUI(String tickets, int preis)
+    public BarzahlungsWerkzeugUI(String tickets, int preis, JFrame owner)
     {
     	_text = tickets;
     	_preis = preis;
     	_rueckgeld = -preis;
-    	_dialog = new JDialog();
+    	_dialog = new JDialog(owner,TITEL,true);
     	_dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    	
+    	
+    	
         _dialog.getContentPane().setLayout(new BorderLayout());
         JComponent topPanel = erstelleUeberschriftPanel();
         JComponent bottomPanel = erstelleBottomPanel();
@@ -52,8 +57,7 @@ public class BarzahlungsWerkzeugUI
      * 
      */
     private JPanel erstelleMitte()
-    {
-    	JPanel pane = new JPanel();
+    {    	JPanel pane = new JPanel();
     	
     	JLabel label = new JLabel(_text);
     	label.setBorder(BorderFactory

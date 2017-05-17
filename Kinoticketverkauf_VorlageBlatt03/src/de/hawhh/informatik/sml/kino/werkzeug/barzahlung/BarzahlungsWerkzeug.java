@@ -5,10 +5,10 @@ import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
-import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
 
 /**
  * Mit diesem Werkzeug können Tickets Bar bezahlt werden. Es arbeitet
@@ -19,7 +19,7 @@ import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
  * @author Emira Zorgati
  * @version SoSe 2017
  */
-public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
+public class BarzahlungsWerkzeug
 {
     // Die aktuelle Vorstellung, deren Tickets verkauft werden. Darf nicht null sein.
     private Vorstellung _vorstellung;
@@ -32,14 +32,14 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      * @require vorstellung != null
      * @require plaetze != null
      */
-    public BarzahlungsWerkzeug(Vorstellung vorstellung, Set<Platz> plaetze)
+    public BarzahlungsWerkzeug(Vorstellung vorstellung, Set<Platz> plaetze, JFrame owner)
     {
     	assert vorstellung != null : "Vorbedingung verletzt: vorstellung != null";
     	assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
     	
     	_vorstellung = vorstellung;
     	_plaetze = plaetze;
-        _ui = new BarzahlungsWerkzeugUI(getTickets(), _vorstellung.getPreisFuerPlaetze(_plaetze));
+        _ui = new BarzahlungsWerkzeugUI(getTickets(), _vorstellung.getPreisFuerPlaetze(_plaetze), owner);
         registriereUIAktionen();
         
         _ui.zeigeFenster();
@@ -75,7 +75,7 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
             {
             	if(_ui.getRueckgeld() >= 0)
             	{
-            		informiereUeberAenderung();
+                    _vorstellung.verkaufePlaetze(_plaetze);
                 	reagiereAufBeendenButton();
             	}
             	else

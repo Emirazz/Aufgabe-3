@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
 import de.hawhh.informatik.sml.kino.werkzeug.barzahlung.BarzahlungsWerkzeug;
-import de.hawhh.informatik.sml.kino.werkzeuge.SubwerkzeugObserver;
+import javax.swing.JFrame;
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
  * auf einer Vorstellung als Material. Mit ihm kann angezeigt werden, welche
@@ -26,7 +28,6 @@ public class PlatzVerkaufsWerkzeug
     private Vorstellung _vorstellung;
 
     private PlatzVerkaufsWerkzeugUI _ui;
-    private BarzahlungsWerkzeug _barzahlungswerkzeug;
 
     /**
      * Initialisiert das PlatzVerkaufsWerkzeug.
@@ -55,15 +56,9 @@ public class PlatzVerkaufsWerkzeug
      */
     private void informiereBarzahlungsWerkzeug()
     {
-    	_barzahlungswerkzeug = new BarzahlungsWerkzeug(_vorstellung,_ui.getPlatzplan().getAusgewaehltePlaetze());
-    	_barzahlungswerkzeug.registriereBeobachter(new SubwerkzeugObserver()
-        {
-            @Override
-            public void reagiereAufAenderung()
-            {
-            	verkaufePlaetze(_vorstellung);
-            }
-        });
+    	new BarzahlungsWerkzeug(
+    			_vorstellung,_ui.getPlatzplan().getAusgewaehltePlaetze(),(JFrame) SwingUtilities.getWindowAncestor(_ui.getPlatzplan()));
+    	aktualisierePlatzplan();
     }
 
     /**
@@ -183,15 +178,6 @@ public class PlatzVerkaufsWerkzeug
         }
     }
 
-    /**
-     * Verkauft die ausgewählten Plaetze.
-     */
-    private void verkaufePlaetze(Vorstellung vorstellung)
-    {
-        Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
-        vorstellung.verkaufePlaetze(plaetze);
-        aktualisierePlatzplan();
-    }
 
     /**
      * Storniert die ausgewählten Plaetze.
