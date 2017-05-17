@@ -138,4 +138,5 @@ class KassenWerkzeugUI
     {
         return _beendenButton;
     }
+    
 }

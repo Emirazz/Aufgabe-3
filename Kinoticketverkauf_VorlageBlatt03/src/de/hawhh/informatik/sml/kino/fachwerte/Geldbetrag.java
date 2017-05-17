@@ -17,8 +17,6 @@ public class Geldbetrag
 	private int _euro;
 	//ganzer Centanteil
 	private int _cent;
-	//Set von Geldbeträgen
-	static Map<Integer, Geldbetrag> _betraege = new HashMap<Integer, Geldbetrag>();
 	
 	/**
 	 * Erzeugt einen Geldbetrag.
@@ -27,12 +25,12 @@ public class Geldbetrag
 	 * @param Cent
 	 * 			Der Cent Anteil.
 	 * @require euro >= 0
-	 * @require cent >= 0
+	 * @require cent >= 0 && cent < 100
 	 */
 	private Geldbetrag(int euro, int cent)
 	{
 		assert euro >= 0 : "Vorbedingung verletzt: euro >=0";
-		assert cent >= 0 : "Vorbedingung verletzt: cent >=0";
+		assert cent >= 0 && cent <100 : "Vorbedingung verletzt: cent >=0 && cent <100";
 		_euro = euro;
 		_cent = cent;
 	}
@@ -193,7 +191,7 @@ public class Geldbetrag
 	 * @param Cent
 	 * 			Der Cent Anteil.
 	 * @require euro >= 0
-	 * @require cent >= 0
+	 * @require cent >= 0 && cent < 100
 	 */
 	public static Geldbetrag get(int euro, int cent)
 	{
@@ -211,13 +209,102 @@ public class Geldbetrag
 	 */
 	public static Geldbetrag toGeldbetrag(int betrag)
 	{
-		assert betrag >= 0 :"Vorbedinung verletzt: betrag >= 0'";
+		assert betrag >= 0 :"Vorbedinung verletzt: betrag >= 0";
 		
 		return Geldbetrag.get(betrag/100, betrag%100);
 	}
 	
+	/**
+	 * Aus einem String im Format "Euro,Cent" wird zu ein Geldbetrag gemacht 
+	 * @param text
+	 * @return
+	 * @require text != null
+	 * @require !test.isEmpty()
+	 * @ensure return != null
+	 */
 	public static Geldbetrag toGeldbetrag(String text)
 	{
-		
+		assert text != null: "Vorbedinung verletzt: text != null";
+		assert !text.isEmpty(): "Vorbedinung verletzt: !text.isEmpty()";
+		String euro = "";
+		String cent = "";
+		boolean komma = false;
+		for(int i = 0; i < text.length();i++)
+		{
+			char ch = text.charAt(i);
+			if(ch>=48 && ch <=57 && !komma)
+			{
+				euro += ch;
+			}
+			else if(ch>=48 && ch <=57 && komma)
+			{
+				cent += ch;
+			}
+			else if(ch == ',')
+			{
+				komma = true;
+			}
+		}
+		return Geldbetrag.get(toInt(euro), toInt(cent));
+	}
+	
+	/**
+	 * berechnet den Int-Wert, der enthalten ist in einem Text
+	 * @param text
+	 * 		Der Text, welcher den Int-Wert enthält
+	 * @return
+	 */
+	static private int toInt(String text)
+	{
+		int length =text.length();
+		int multi = 1;
+		int result = 0;
+		for(int i = length-1; i >= 0; i--)
+		{
+			char ch = text.charAt(i);
+			switch(ch)
+			{
+			case'0':
+				multi = multi*10;
+				break;
+			case '1':
+				result += 1*multi;
+				multi = multi*10;
+				break;
+			case '2':
+				result += 2*multi;
+				multi = multi*10;
+				break;
+			case '3':
+				result += 3*multi;
+				multi = multi*10;
+				break;
+			case '4':
+				result += 4*multi;
+				multi = multi*10;
+				break;
+			case '5':
+				result += 5*multi;
+				multi = multi*10;
+				break;
+			case '6':
+				result += 6*multi;
+				multi = multi*10;
+				break;
+			case '7':
+				result += 7*multi;
+				multi = multi*10;
+				break;
+			case '8':
+				result += 8*multi;
+				multi = multi*10;
+				break;
+			case '9':
+				result += 9*multi;
+				multi = multi*10;
+				break;
+			}
+		}
+		return result;
 	}
 }

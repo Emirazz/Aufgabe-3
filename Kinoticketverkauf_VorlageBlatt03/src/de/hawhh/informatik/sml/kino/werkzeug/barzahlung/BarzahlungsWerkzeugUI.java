@@ -77,11 +77,13 @@ public class BarzahlungsWerkzeugUI
     				@Override
     	            public void actionPerformed(ActionEvent e)
     	            {
-    					if(field.getValue() == int.class)
+    					if(field.getValue() instanceof String)
     					{
-    						int bargeld =(int)field.getValue();
-    	            		aktualisiereRueckgeld(bargeld);
+    						String text = (String) field.getValue();
+    						int bargeld = toInt(text);
+    						aktualisiereRueckgeld(bargeld);
     					}
+    					
     	            }    		
     			});
     	
@@ -92,6 +94,60 @@ public class BarzahlungsWerkzeugUI
     	return pane;
     }
     
+    private int toInt(String text)
+    {
+    	int length =text.length();
+		int multi = 1;
+		int result = 0;
+		for(int i = length-1; i >= 0; i--)
+		{
+			char ch = text.charAt(i);
+			switch(ch)
+			{
+			case'0':
+				multi = multi*10;
+				break;
+			case '1':
+				result += 1*multi;
+				multi = multi*10;
+				break;
+			case '2':
+				result += 2*multi;
+				multi = multi*10;
+				break;
+			case '3':
+				result += 3*multi;
+				multi = multi*10;
+				break;
+			case '4':
+				result += 4*multi;
+				multi = multi*10;
+				break;
+			case '5':
+				result += 5*multi;
+				multi = multi*10;
+				break;
+			case '6':
+				result += 6*multi;
+				multi = multi*10;
+				break;
+			case '7':
+				result += 7*multi;
+				multi = multi*10;
+				break;
+			case '8':
+				result += 8*multi;
+				multi = multi*10;
+				break;
+			case '9':
+				result += 9*multi;
+				multi = multi*10;
+				break;
+			}
+		}
+		return result;
+    }
+    
     /**
      * Berechnet das Rueckgeld.
      */
@@ -99,7 +155,10 @@ public class BarzahlungsWerkzeugUI
     {
     	_rueckgeld = _preis - bargeld;
     	JComponent centerPanel = erstelleMitte();
-    	centerPanel.repaint();
+    	_dialog.remove(centerPanel);
+    	_dialog.add(centerPanel);
+    	_dialog.revalidate();
+    	_dialog.repaint();
     }
     /**
      * Erzeugt das Panel mit der Überschrift fuer das Programm.

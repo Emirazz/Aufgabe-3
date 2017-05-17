@@ -9,7 +9,6 @@ import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
 import de.hawhh.informatik.sml.kino.werkzeug.barzahlung.BarzahlungsWerkzeug;
 import de.hawhh.informatik.sml.kino.werkzeuge.SubwerkzeugObserver;
-
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
  * auf einer Vorstellung als Material. Mit ihm kann angezeigt werden, welche
