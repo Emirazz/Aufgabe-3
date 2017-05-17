@@ -41,12 +41,12 @@ public class GeldbetragTest
     {
     	Geldbetrag geldbetrag = Geldbetrag.get(16,0);
     	
-    	assertTrue(geldbetrag, _geldbetrag.addiere(_geldbetrag2));
-    	assertTrue(geldbetrag, _geldbetrag2.addiere(_geldbetrag));
+    	assertEquals(geldbetrag, _geldbetrag.addiere(_geldbetrag2));
+    	assertEquals(geldbetrag, _geldbetrag2.addiere(_geldbetrag));
     	
-    	assertTrue(_geldbetrag0, _geldbetrag0.addiere(_geldbetrag0));
-    	assertTrue(geldbetrag, _geldbetrag0.addiere(geldbetrag));
-    	assertTrue(geldbetrag, geldbetrag.addiere(_geldbetrag0));
+    	assertEquals(_geldbetrag0, _geldbetrag0.addiere(_geldbetrag0));
+    	assertEquals(geldbetrag, _geldbetrag0.addiere(geldbetrag));
+    	assertEquals(geldbetrag, geldbetrag.addiere(_geldbetrag0));
     	
     }
 
@@ -55,34 +55,44 @@ public class GeldbetragTest
     {
     	Geldbetrag geldbetrag = Geldbetrag.get(5,0);
     	
-    	assertTrue(geldbetrag, _geldbetrag.subtrahieren(_geldbetrag2));
-    	assertTrue(_geldbetrag0, _geldbetrag0.subtrahieren(_geldbetrag0));
-    	assertTrue(geldbetrag, geldbetrag.subtrahieren(_geldbetrag0));
+    	assertEquals(geldbetrag, _geldbetrag.subtrahieren(_geldbetrag2));
+    	assertEquals(_geldbetrag0, _geldbetrag0.subtrahieren(_geldbetrag0));
+    	assertEquals(geldbetrag, geldbetrag.subtrahieren(_geldbetrag0)); 	
     	
     }
 
     @Test
     public void testeMultiplizieren()
     {
-    	
+    	Geldbetrag geldbetrag = Geldbetrag.get(11,0);
+    	assertEquals(geldbetrag, _geldbetrag2.multiplizieren(2));
+    	assertEquals(_geldbetrag2, _geldbetrag2.multiplizieren(1));
+    	assertEquals(_geldbetrag0, _geldbetrag2.multiplizieren(0));
+    	assertEquals(_geldbetrag0, _geldbetrag0.multiplizieren(2));
         
     }
 
     @Test
     public void testeToString()
     {
-        
+    	Geldbetrag betrag = Geldbetrag.get(100,99);
+    	assertEquals(_geldbetrag0.toString(), "00,00");
+    	assertEquals(_geldbetrag.toString(), "10,50");
+    	assertEquals(betrag.toString(), "100,99");
     }
 
     @Test
     public void testeToGeldbetragString()
     {
-        
+        assertEquals(_geldbetrag0, Geldbetrag.toGeldbetrag("00,00"));
+        assertEquals(_geldbetrag, Geldbetrag.toGeldbetrag("10,50"));
     }
 
     @Test
     public void testToGeldbetragInt()
     {
+    	assertEquals(_geldbetrag0, Geldbetrag.toGeldbetrag(0));
+        assertEquals(_geldbetrag, Geldbetrag.toGeldbetrag(1050));
         
     }
 }
