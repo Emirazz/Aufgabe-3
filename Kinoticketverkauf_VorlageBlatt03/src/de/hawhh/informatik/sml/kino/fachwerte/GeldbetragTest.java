@@ -55,9 +55,9 @@ public class GeldbetragTest
     {
     	Geldbetrag geldbetrag = Geldbetrag.get(5,0);
     	
-    	assertEquals(geldbetrag, _geldbetrag.subtrahieren(_geldbetrag2));
-    	assertEquals(_geldbetrag0, _geldbetrag0.subtrahieren(_geldbetrag0));
-    	assertEquals(geldbetrag, geldbetrag.subtrahieren(_geldbetrag0)); 	
+    	assertEquals(geldbetrag, _geldbetrag.subtrahiere(_geldbetrag2));
+    	assertEquals(_geldbetrag0, _geldbetrag0.subtrahiere(_geldbetrag0));
+    	assertEquals(geldbetrag, geldbetrag.subtrahiere(_geldbetrag0)); 	
     	
     }
 
@@ -65,10 +65,10 @@ public class GeldbetragTest
     public void testeMultiplizieren()
     {
     	Geldbetrag geldbetrag = Geldbetrag.get(11,0);
-    	assertEquals(geldbetrag, _geldbetrag2.multiplizieren(2));
-    	assertEquals(_geldbetrag2, _geldbetrag2.multiplizieren(1));
-    	assertEquals(_geldbetrag0, _geldbetrag2.multiplizieren(0));
-    	assertEquals(_geldbetrag0, _geldbetrag0.multiplizieren(2));
+    	assertEquals(geldbetrag, _geldbetrag2.multipliziere(2));
+    	assertEquals(_geldbetrag2, _geldbetrag2.multipliziere(1));
+    	assertEquals(_geldbetrag0, _geldbetrag2.multipliziere(0));
+    	assertEquals(_geldbetrag0, _geldbetrag0.multipliziere(2));
         
     }
 

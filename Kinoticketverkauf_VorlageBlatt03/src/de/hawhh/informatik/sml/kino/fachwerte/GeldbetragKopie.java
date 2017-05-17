@@ -1,7 +1,9 @@
 package de.hawhh.informatik.sml.kino.fachwerte;
 
+import java.util.Map;
+import java.util.HashMap;
 /**
- * Ein Geldbetrag, bestehend aus Euro und Cent.
+ * Ein GeldbetragKopie, bestehend aus Euro und Cent.
  * 
  * Ein Klassenobjekt bietet Methoden zur Addition und subtrahtion zweier Beträge,
  * sowie die Multiplikation mit einem Integer, und das Umwandeln von 
@@ -11,17 +13,17 @@ package de.hawhh.informatik.sml.kino.fachwerte;
  * @version SoSe17
  *
  */
-public class Geldbetrag
+public class GeldbetragKopie
 {
 	//ganzer Euroanteil
 	private int _euro;
 	//ganzer Centanteil
 	private int _cent;
 	//Set von Geldbeträgen
-	static Map<Integer, Geldbetrag> _betraege = new HashMap<Integer, Geldbetrag>();
+	static Map<Integer, GeldbetragKopie> _betraege = new HashMap<Integer, GeldbetragKopie>();
 	
 	/**
-	 * Erzeugt einen Geldbetrag.
+	 * Erzeugt einen GeldbetragKopie.
 	 * @param Euro
 	 * 			Die ganzen Euro.
 	 * @param Cent
@@ -29,7 +31,7 @@ public class Geldbetrag
 	 * @require euro >= 0
 	 * @require cent >= 0
 	 */
-	private Geldbetrag(int euro, int cent)
+	private GeldbetragKopie(int euro, int cent)
 	{
 		assert euro >= 0 : "Vorbedingung verletzt: euro >=0";
 		assert cent >= 0 : "Vorbedingung verletzt: cent >=0";
@@ -85,9 +87,9 @@ public class Geldbetrag
 	public boolean equals(Object o)
 	{
 		boolean result = false;
-		if(o instanceof Geldbetrag)
+		if(o instanceof GeldbetragKopie)
 		{
-			Geldbetrag betrag = (Geldbetrag) o;
+			GeldbetragKopie betrag = (GeldbetragKopie) o;
 			if(betrag._euro == _euro)
 			{
 				if(betrag._cent == _cent)
@@ -110,31 +112,31 @@ public class Geldbetrag
 	/**
 	 * Addier zwei Geldbeträge
 	 * @param betrag
-	 * 			der Geldbetrag, welche addiert werden soll
-	 * @return der neue Geldbetrag
+	 * 			der GeldbetragKopie, welche addiert werden soll
+	 * @return der neue GeldbetragKopie
 	 * @require betrag != null
 	 * @ensure result != null
 	 */
-	public Geldbetrag addiere(Geldbetrag betrag)
+	public GeldbetragKopie addiere(GeldbetragKopie betrag)
 	{
 		assert betrag != null : "Vorbedingung verletzt: betrag != null";
 		
 		int meinBetrag = _euro *100 + _cent;
 		int zuAddieren = (betrag._euro) *100 + betrag._cent;
 		int neu = meinBetrag + zuAddieren;
-		return Geldbetrag.get(neu/100,neu%100);
+		return GeldbetragKopie.get(neu/100,neu%100);
 	}
 	
 	/**
 	 * Subtrahiert zwei Geldbeträge
 	 * @param betrag
-	 * 			der Geldbetrag, welche subtrahiert werden soll
-	 * @return der neue Geldbetrag
+	 * 			der GeldbetragKopie, welche subtrahiert werden soll
+	 * @return der neue GeldbetragKopie
 	 * @require betrag != null
 	 * @require istGroeßerOderGleich(betrag)
 	 * @ensure result != null
 	 */
-	public Geldbetrag subtrahiere(Geldbetrag betrag)
+	public GeldbetragKopie subtrahiere(GeldbetragKopie betrag)
 	{
 		assert betrag != null : "Vorbedingung verletzt: betrag != null";
 		assert istGroeßerOderGleich(betrag) :"Vorbedingung verletzt: istGroeßerOderGleich(betrag)";
@@ -142,7 +144,7 @@ public class Geldbetrag
 		int meinBetrag = _euro *100 + _cent;
 		int zuSubtrahieren = (betrag._euro) *100 + betrag._cent;
 		int neu = meinBetrag - zuSubtrahieren;
-		return Geldbetrag.get(neu/100,neu%100);
+		return GeldbetragKopie.get(neu/100,neu%100);
 	}
 
 	/**
@@ -151,7 +153,7 @@ public class Geldbetrag
 	 * @return
 	 * @require betrag != null
 	 */
-	private boolean istGroeßerOderGleich(Geldbetrag betrag)
+	private boolean istGroeßerOderGleich(GeldbetragKopie betrag)
 	{
 		assert betrag != null : "Vorbedingung verletzt: betrag != null";
 		
@@ -171,23 +173,23 @@ public class Geldbetrag
 		
 	}
 	/**
-	 * Multipliziert einen Geldbetrag mit einem Faktor
+	 * Multipliziert einen GeldbetragKopie mit einem Faktor
 	 * @param faktor
-	 * 			Der Faktor, mit dem der Geldbetrag multipliziert werden soll
-	 * @return neuer Geldbetrag
+	 * 			Der Faktor, mit dem der GeldbetragKopie multipliziert werden soll
+	 * @return neuer GeldbetragKopie
 	 * @require faktor >= 0
 	 * @ensure result != null
 	 */
-	public Geldbetrag multipliziere(int faktor)
+	public GeldbetragKopie multipliziere(int faktor)
 	{
 		assert faktor >= 0 : "Vorbedingung verletzt: faktor >=0";
 		int meinBetrag = _euro*100 + _cent;
 		int neu = meinBetrag * faktor;
-		return Geldbetrag.get(neu/100,neu%100);
+		return GeldbetragKopie.get(neu/100,neu%100);
 	}
 	
 	/**
-	 * Gibt einen GeldbetragObjekt zurück.
+	 * Gibt einen GeldbetragKopieObjekt zurück.
 	 * @param Euro
 	 * 			Die ganzen Euro.
 	 * @param Cent
@@ -195,29 +197,34 @@ public class Geldbetrag
 	 * @require euro >= 0
 	 * @require cent >= 0
 	 */
-	public static Geldbetrag get(int euro, int cent)
+	public static GeldbetragKopie get(int euro, int cent)
 	{
-		Geldbetrag geldbetrag = new Geldbetrag(euro,cent);
-		return geldbetrag;
+		int betrag = euro*100 + cent;
+		
+		if(_betraege.containsKey(betrag))
+		{
+			return _betraege.get(betrag);
+		}
+		else
+		{
+			GeldbetragKopie geldbetrag = new GeldbetragKopie(euro,cent);
+			_betraege.put(betrag, geldbetrag);
+			return geldbetrag;
+		}
 	}
 	
 	/**
-	 * Macht aus einem Integer einen Geldbetrag. Zb 5 -> Geldbetrag "00,05"
-	 * 												500 -> Geldbetrag "05,00" 
+	 * Macht aus einem Integer einen GeldbetragKopie. Zb 5 -> GeldbetragKopie "00,05"
+	 * 												500 -> GeldbetragKopie "05,00" 
 	 * @param betrag
 	 * 			Der Betrag in Eurocent.
-	 * @return ein Geldbetrag der den Betrag betrag hat.
+	 * @return ein GeldbetragKopie der den Betrag betrag hat.
 	 * @require betrag >= 0
 	 */
-	public static Geldbetrag toGeldbetrag(int betrag)
+	public static GeldbetragKopie toGeldbetragKopie(int betrag)
 	{
 		assert betrag >= 0 :"Vorbedinung verletzt: betrag >= 0'";
 		
-		return Geldbetrag.get(betrag/100, betrag%100);
-	}
-	
-	public static Geldbetrag toGeldbetrag(String text)
-	{
-		
+		return GeldbetragKopie.get(betrag/100, betrag%100);
 	}
 }
